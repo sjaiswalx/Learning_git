@@ -1,0 +1,172 @@
+Where is your bash interpreter is located -
+	-------------------
+	$ which bash
+	/bin/bash
+	====================
+
+
+
+"#!" is shebang which is not read as a comment here is first bash shell script example-
+	-------------------
+	#!/bin/bash
+	#declare a string
+	STRING="Hello World"
+	#print the variable on the screen
+	echo $STRING
+	====================
+
+
+
+Make the file executable 
+	-------------------
+	$ chmod +x hello_world.sh
+	$ ./hello_world.sh  
+	Hello World
+	====================
+
+
+
+Simple Backup script 
+	-------------------
+	#!/bin/bash
+	tar -czvf my_script_backup.tar.gz /home/jss5kor/prog/script
+	
+	#!/bin/bash
+	open_file=my_script_backup_$(date +%y%m%d).tar.gz
+	tar -czf $open_file /home/jss5kor/prog/script
+	====================
+
+
+
+Global vs. Local variables
+	-------------------
+	#!/bin/bash
+	#define bash global variable
+	#this variable is global and can be used anywhere in the bash script
+	VAR="Global Variable"
+	function bash 
+	{
+	#define as a local variable
+	#this variable is local to bash function only 
+	local VAR="Local variable"
+	echo $VAR
+	}
+	echo $VAR
+	bash	
+	echo $VAR
+	
+	output-
+	jss5kor@g3gdev-jss5kor:~/prog/script$ ./globalVsLocal.sh 
+	Global Variable
+	Local variable
+	Global Variable
+	====================
+
+
+
+Passing arguments to the bash script
+	--------------------
+	#!/bin/bash
+	echo '$# ->'  $# 
+	echo '$@ ->'  $@ 
+	echo '$1 ->'  $1 
+	echo '$2 ->'  $2 
+	echo '$3 ->'  $3
+	echo '$4 ->'  $4
+
+	output-
+	jss5kor@g3gdev-jss5kor:~/prog/script$ ./passingArgs.sh sumit jaiswal bosch office 
+	$# -> 4
+	$@ -> sumit jaiswal bosch office
+	$1 -> sumit
+	$2 -> jaiswal
+	$3 -> bosch
+	$4 -> office
+	====================
+
+
+
+Store arguments from bash command line in special array
+	--------------------
+	args=("$@")
+	echo ${args[0]} 
+	echo ${args[1]} 
+	echo ${args[2]} 
+	echo ${args[3]} 
+	echo ${args[4]} 
+	====================
+
+
+
+Executing shell commands with bash use backticks-
+	--------------------
+	echo uname -o
+	$ ./run.sh
+	uname -o
+	
+	echo `uname -o` 
+	$./run.sh
+	GNU/Linux
+	====================
+
+
+Bash Trap Command : for signals catching
+    --------------------
+    #!/bin/bash
+    trap bashtrap INT
+    clear
+    bashtrap()
+    {
+         echo "CTRL + C is detected ! ... executing bash trapi"
+    }
+    for a in `seq 1 10` ;
+    do
+       echo "$a/10 to exit"
+       sleep 1;
+    done
+    echo "Exit Bash trap example."
+    ====================
+
+    
+Declare simple bash array 
+    -------------------
+    #@!/bin/bash
+    ARRAY=('Debian Linux', 'Redhet Linux ', Ubunbt Linux)
+    ELEMENTS=${#ARRAY[@]}
+    for (( i=0;i<$ELEMENTS;i++));
+    do
+    echo ${ARRAY[${i}]}
+    done
+    ===================
+
+Read file into bash array
+    -------------------
+    TODO: script is not working need to check  
+    #!/bin/bash
+    #declare array
+    declare -a ARRAY
+
+    #link file descriptor 10 with stdin
+    exec 10<&0
+
+    #stdin replaced with a file supplied as a first arguments-
+    exec < $1
+
+    let count=0
+
+    while read LINE; 
+    do
+    ARRAY[$count]=$LINE
+    ( (count++) )
+    done
+
+    echo Number of elements: $i{#ARRAY[@]}
+
+    #array content 
+    echo ${ARRAY[@]}
+
+    #restore stdin from file descriptor 10;
+    #and close the file descriptor 10;
+    exec 0<&10 10<&-
+    ===================
+
